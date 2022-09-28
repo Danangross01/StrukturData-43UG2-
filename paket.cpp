@@ -1,63 +1,100 @@
 #include <iostream>
+#define MAX 8
 
 using namespace std;
-
 struct paket{
     string nama_paket;
     int berat;
     string kota;
-
+    bool penuh();
+    bool kosong();
+    void tambahkan();
+    void hapus();
+    void tampil();
 };
-void tambah_pkt(paket *pkt, int *x){
-    cout << "Masukkan nama paket : ";
-    cin >> pkt[*x].nama_paket;
-    cout << "Masukkan berat paket : ";
-    cin >> pkt[*x].berat;
-    cout << "Masukkan nama kota : ";
-    cin >> pkt[*x].kota;
-    *x = *x + 1;
-    cout<< endl;
-    cout << " berhasil ditambahkan" << endl;
-    cout << endl;
-}
-void hapus_pkt(paket *pkt, int *x){
-    *x = *x - 1;
-    cout << pkt[*x].nama_paket<<" berhasil dihapus" <<endl;
-}
-void tampil_pkt(paket *pkt, int *x){
-    for(int i=0; i<*x; i++){
-      cout << pkt[i].nama_paket << " " << pkt[i].berat<< " " << pkt[i].kota << endl;
+
+paket stack[MAX];
+int atas = 0;
+
+bool paket::penuh(){
+    if(atas == MAX){
+        return true;
+    }else{
+        return false;
     }
-    cout << endl;
 }
-int main(){
-    paket pkt[100];
-    int x = 0;
-    int pilihan;
-    do{
+
+bool paket::kosong(){
+    if(atas == 0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void paket::tambahkan(){
+    if(penuh()){
+        cout << "Penuh" << endl;
+    }else{
+        cout << "Nama Paket : ";
+        cin >> stack[atas].nama_paket;
+        cout << "Berat Paket : ";
+        cin >> stack[atas].berat;
+        cout << "Kota Tujuan : ";
+        cin >> stack[atas].kota;
+
+        atas++;
+    }
+}
+
+void paket::hapus(){
+    if(kosong()){
+        cout << "Masih Kosong" << endl;
+    }else{
+        atas--;
+    }
+}
+
+void paket::tampil(){
+    if(kosong()){
+        cout << "Masih Kosong" << endl;
+    }
+    else{
         cout << endl;
-        cout << "1. Tambah paket" <<endl;
-        cout << "2. Hapus paket terakhir" <<endl;
-        cout << "3. Tampilkan paket" <<endl;
-        cout << "4. Keluar" <<endl;
-        cout << "Masukkan pilihan : ";
-        cin >> pilihan;
-        if(pilihan==1)
+        for(int i = 0 ; i < atas ; i++){
+            cout << i+1 << ". " << stack[i].nama_paket << " " << stack[i].berat << " " << stack[i].kota << endl;
+        }
+    }
+}
+
+int main(){
+    int pilih;
+    paket pkt;
+    do{
+        cout << endl << endl;
+        cout << "1. Tambah Paket" << endl;
+        cout << "2. Hapus Paket" << endl;
+        cout << "3. Tampil Data Paket" << endl;
+        cout << "4. Keluar" << endl;
+        cout << "Pilih : ";
+        cin >> pilih;
+        if(pilih==1)
             {
-                tambah_pkt(pkt, &x);
+               pkt.tambahkan();
             }
-        if(pilihan==2)
+        if(pilih==2)
             {
-                hapus_pkt(pkt, &x);
+                 pkt.hapus();
             }
-        if(pilihan==3)
+        if(pilih==3)
             {
-                tampil_pkt(pkt, &x);
+                pkt.tampil();
             }
-        if(pilihan==4)
+        if(pilih==4)
             {
             cout << "Terima Kasih" << endl;
             }
-    }while(pilihan!=4);
-    return 0;
+    }while(pilih != 4);
 }
+
+
